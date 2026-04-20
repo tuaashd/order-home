@@ -26,6 +26,51 @@ const dishes = [
   },
 ] as const;
 
+const menuItems = [
+  {
+    name: '江西辣鸡翅',
+    price: '¥26',
+    spice: '重辣',
+    intro: '先卤后炸再拌江西辣椒面，外皮焦香，越吃越上头。',
+    tags: ['下饭', '招牌', '鸡翅爱好者'],
+  },
+  {
+    name: '金针菇番茄肥牛',
+    price: '¥32',
+    spice: '微辣',
+    intro: '番茄汤底酸甜开胃，肥牛和金针菇吸满汤汁，适合拌饭。',
+    tags: ['汤汁浓', '酸香', '适合配米饭'],
+  },
+  {
+    name: '泡椒藕带牛肉',
+    price: '¥34',
+    spice: '中辣',
+    intro: '藕带清脆，牛肉嫩滑，泡椒带一点酸劲，口感很跳。',
+    tags: ['脆爽', '现炒', '口味菜'],
+  },
+  {
+    name: '小炒黄牛肉',
+    price: '¥38',
+    spice: '中辣',
+    intro: '牛肉快炒保留嫩度，搭青椒和蒜香，锅气更足。',
+    tags: ['热销', '锅气足', '经典湘味'],
+  },
+  {
+    name: '青椒皮蛋擂茄子',
+    price: '¥22',
+    spice: '不辣',
+    intro: '茄子绵软，皮蛋和青椒带出复合香气，适合搭配重口热菜。',
+    tags: ['凉拌', '解腻', '家常'],
+  },
+  {
+    name: '酸豆角肉末拌粉',
+    price: '¥18',
+    spice: '微辣',
+    intro: '酸豆角开胃，肉末咸香，作为轻主食或加餐都合适。',
+    tags: ['主食', '快出餐', '高复购'],
+  },
+] as const;
+
 const steps = [
   { index: '01', title: '浏览菜单', desc: '首屏先给出招牌组合和分类入口，让用户 3 秒内找到想吃的方向。' },
   { index: '02', title: '加入购物车', desc: '规格、辣度、配菜信息保持短链路，减少反复跳转带来的流失。' },
@@ -183,6 +228,52 @@ function App() {
                     <h3 className="mt-6 font-display text-3xl text-white">{item.name}</h3>
                     <p className="mt-4 max-w-sm text-sm leading-7 text-stone-300">{item.desc}</p>
                     <div className="mt-8 h-px bg-white/10 transition group-hover:bg-orange-200/30" />
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-16 grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+              <div>
+                <p className="section-kicker">菜单列表</p>
+                <h2 className="section-title mt-5">把用户真正会点的菜，直接摆出来。</h2>
+                <p className="section-copy mt-6">
+                  每道菜展示名字、简介、辣度和价格，用户扫一眼就能判断口味，不需要点进去才知道适不适合自己。
+                </p>
+              </div>
+
+              <div className="grid gap-4">
+                {menuItems.map((item) => (
+                  <article
+                    key={item.name}
+                    className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition duration-300 hover:border-orange-300/30 hover:bg-white/[0.06]"
+                  >
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="max-w-2xl">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="font-display text-2xl text-white">{item.name}</h3>
+                          <span className="rounded-full border border-orange-300/25 bg-orange-400/10 px-3 py-1 text-xs text-orange-100">
+                            辣度 · {item.spice}
+                          </span>
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-stone-300">{item.intro}</p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-stone-300"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="shrink-0 rounded-2xl bg-stone-900/80 px-4 py-3 text-right">
+                        <p className="text-xs uppercase tracking-[0.24em] text-stone-500">Price</p>
+                        <p className="mt-2 font-display text-2xl text-orange-300">{item.price}</p>
+                      </div>
+                    </div>
                   </article>
                 ))}
               </div>
