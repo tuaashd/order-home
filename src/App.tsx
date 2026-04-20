@@ -26,6 +26,89 @@ const dishes = [
   },
 ] as const;
 
+type SpiceLevel = 0 | 1 | 2 | 3 | 4;
+
+const spiceTextByLevel: Record<SpiceLevel, string> = {
+  0: '不辣',
+  1: '微辣',
+  2: '中辣',
+  3: '重辣',
+  4: '爆辣',
+};
+
+const spiceBadgeClassByLevel: Record<SpiceLevel, string> = {
+  0: 'border-white/10 bg-white/5 text-stone-200/90',
+  1: 'border-emerald-200/20 bg-emerald-400/10 text-emerald-100',
+  2: 'border-orange-200/20 bg-orange-400/10 text-orange-100',
+  3: 'border-orange-300/25 bg-orange-500/15 text-orange-100',
+  4: 'border-red-300/25 bg-red-500/15 text-red-100',
+};
+
+const menuItems = [
+  {
+    name: '江西辣鸡腿',
+    price: 32,
+    spiceLevel: 3,
+    desc: '现炸鸡腿外酥里嫩，拌江西辣酱与蒜香油泼，适合配米饭。',
+    tag: '招牌',
+  },
+  {
+    name: '金针菇番茄肥牛',
+    price: 36,
+    spiceLevel: 1,
+    desc: '番茄酸甜汤底打底，肥牛与金针菇吸汁，口感更顺滑。',
+    tag: '热销',
+  },
+  {
+    name: '炝锅包菜',
+    price: 16,
+    spiceLevel: 2,
+    desc: '大火快炒锁住脆嫩，干辣椒与花椒炝香，锅气明显。',
+    tag: '下饭',
+  },
+  {
+    name: '剁椒鱼头豆腐煲',
+    price: 42,
+    spiceLevel: 4,
+    desc: '剁椒鲜辣带发酵香，豆腐吸味更入味，适合重口用户。',
+    tag: '爆辣',
+  },
+  {
+    name: '葱油拌面（加煎蛋）',
+    price: 22,
+    spiceLevel: 0,
+    desc: '葱油酱香浓郁，面条筋道，搭配煎蛋更有饱腹感。',
+    tag: '经典',
+  },
+  {
+    name: '酸辣土豆丝',
+    price: 14,
+    spiceLevel: 2,
+    desc: '酸爽开胃，土豆丝脆嫩，适合搭配炸物或红烧类。',
+    tag: '必点',
+  },
+  {
+    name: '藤椒鸡丝凉拌',
+    price: 24,
+    spiceLevel: 2,
+    desc: '藤椒清麻不呛喉，鸡丝爽口，适合做轻负担加购。',
+    tag: '清爽',
+  },
+  {
+    name: '蒜蓉粉丝娃娃菜',
+    price: 18,
+    spiceLevel: 1,
+    desc: '蒜蓉香气突出，粉丝吸汁，娃娃菜更甜更软。',
+    tag: '家常',
+  },
+] as const satisfies ReadonlyArray<{
+  name: string;
+  price: number;
+  spiceLevel: SpiceLevel;
+  desc: string;
+  tag: string;
+}>;
+
 const steps = [
   { index: '01', title: '浏览菜单', desc: '首屏先给出招牌组合和分类入口，让用户 3 秒内找到想吃的方向。' },
   { index: '02', title: '加入购物车', desc: '规格、辣度、配菜信息保持短链路，减少反复跳转带来的流失。' },
@@ -60,11 +143,11 @@ function App() {
                 <a className="transition hover:text-white" href="#menu">
                   菜单
                 </a>
+                <a className="transition hover:text-white" href="#list">
+                  点菜
+                </a>
                 <a className="transition hover:text-white" href="#flow">
                   流程
-                </a>
-                <a className="transition hover:text-white" href="#cta">
-                  立即点餐
                 </a>
               </nav>
             </header>
@@ -86,7 +169,7 @@ function App() {
                 <div className="fade-up-delay-3 mt-10 flex flex-col gap-4 sm:flex-row">
                   <a
                     className="inline-flex items-center justify-center rounded-full bg-orange-400 px-7 py-4 text-sm font-semibold text-stone-950 transition hover:-translate-y-0.5 hover:bg-orange-300"
-                    href="#cta"
+                    href="#list"
                   >
                     立即点餐
                   </a>
@@ -157,6 +240,52 @@ function App() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="list" className="border-b border-white/10">
+          <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-10">
+            <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+              <div>
+                <p className="section-kicker">点菜列表</p>
+                <h2 className="section-title mt-5">今天想吃点什么？</h2>
+                <p className="section-copy mt-6">
+                  下面是一个可扩展的菜品列表模块（mock 数据）。每道菜包含简介、价格与辣度信息，后续可以很自然地接入接口与购物车状态。
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {menuItems.map((item) => (
+                  <article
+                    key={item.name}
+                    className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-orange-300/30 hover:bg-white/[0.06]"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="text-xs uppercase tracking-[0.28em] text-stone-500">菜品</p>
+                        <h3 className="mt-6 font-display text-3xl leading-tight text-white">{item.name}</h3>
+                      </div>
+                      <div className="shrink-0 rounded-full border border-orange-300/20 bg-orange-400/10 px-4 py-2 text-sm font-semibold text-orange-100">
+                        ¥{item.price}
+                      </div>
+                    </div>
+
+                    <p className="mt-4 text-sm leading-7 text-stone-300">{item.desc}</p>
+
+                    <div className="mt-7 flex flex-wrap items-center gap-2">
+                      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.28em] text-stone-200/80">
+                        {item.tag}
+                      </span>
+                      <span
+                        className={`rounded-full border px-3 py-1 text-xs uppercase tracking-[0.28em] ${spiceBadgeClassByLevel[item.spiceLevel]}`}
+                      >
+                        辣度：{spiceTextByLevel[item.spiceLevel]}
+                      </span>
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -282,7 +411,7 @@ function App() {
               <div className="mt-8 flex flex-col gap-4 sm:flex-row lg:mt-0">
                 <a
                   className="inline-flex items-center justify-center rounded-full bg-orange-400 px-7 py-4 text-sm font-semibold text-stone-950 transition hover:-translate-y-0.5 hover:bg-orange-300"
-                  href="#"
+                  href="#list"
                 >
                   开始点餐
                 </a>
